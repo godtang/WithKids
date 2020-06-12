@@ -70,24 +70,7 @@ public class FullscreenActivity extends AppCompatActivity implements View.OnClic
             hide();
         }
     };
-    /**
-     * Touch listener to use for in-layout UI controls to delay hiding the
-     * system UI. This is to prevent the jarring behavior of controls going away
-     * while interacting with activity UI.
-     */
-    private final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            if(MotionEvent.ACTION_UP==motionEvent.getAction()) {
-                ShowGame1();
-            }
-            return false;
-//            if (AUTO_HIDE) {
-//                delayedHide(AUTO_HIDE_DELAY_MILLIS);
-//            }
-//            return false;
-        }
-    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,10 +91,6 @@ public class FullscreenActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
-        // Upon interacting with UI controls, delay any scheduled hide()
-        // operations to prevent the jarring behavior of controls going away
-        // while interacting with the UI.
-        //findViewById(R.id.SchulteGrid_button1).setOnTouchListener(mDelayHideTouchListener);
         findViewById(R.id.SchulteGrid_button1).setOnClickListener(this);
         findViewById(R.id.SchulteGrid_button2).setOnClickListener(this);
         findViewById(R.id.SchulteGrid_button3).setOnClickListener(this);
@@ -170,10 +149,7 @@ public class FullscreenActivity extends AppCompatActivity implements View.OnClic
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
 
-    private void ShowGame1(){
-        System.out.println("ShowGame1");
-        //startActivity(Game1Activity.toGame1Activity(this));
-    }
+
 
     @Override
     public void onClick(View view) {
