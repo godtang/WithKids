@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">WithKids</string>
 
-    <string name="dummy_button">Game1</string>
+    <string name="SchulteGrid_button1">Schulte Grid 3X3</string>
+    <string name="SchulteGrid_button2">Schulte Grid 4X4</string>
+    <string name="SchulteGrid_button3">Schulte Grid 5X5</string>
     <string name="dummy_content">Game\nWith Kids</string>
 
     <string name="title_activity_game1">Game1Activity</string>
