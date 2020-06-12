@@ -1,28 +1,17 @@
 package com.lx.withkids;
 
-import android.annotation.SuppressLint;
-
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Display;
 import android.view.Gravity;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.GridLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-
-import static android.view.View.TEXT_ALIGNMENT_CENTER;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -32,32 +21,34 @@ public class Game1Activity extends AppCompatActivity {
 
     private androidx.gridlayout.widget.GridLayout gridLayout;
     private List<Integer> listIndex;
+    private int gameSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game1);
 
+        gameSize = super.getIntent().getIntExtra("gameSize", 0);
         initListIndex();
 
         gridLayout = findViewById(R.id.GameGrid);
-        gridLayout.setRowCount(5);
-        gridLayout.setColumnCount(5);
+        gridLayout.setRowCount(gameSize);
+        gridLayout.setColumnCount(gameSize);
 
         Display defaultDisplay = getWindowManager().getDefaultDisplay();
         Point point = new Point();
         defaultDisplay.getSize(point);
 
         int screenWidth = point.x;
-        int iTextWidth = screenWidth / 5;
-        for (int iRow = 0; iRow<5;iRow++){
-            for(int iCol = 0; iCol < 5;iCol++){
+        int iTextWidth = screenWidth / gameSize;
+        for (int iRow = 0; iRow<gameSize;iRow++){
+            for(int iCol = 0; iCol < gameSize;iCol++){
                 TextView t = new TextView(this);
                 t.setText(Integer.toString(getListIndex()));
                 t.setWidth(iTextWidth);
                 t.setHeight(iTextWidth);
                 t.setGravity(Gravity.CENTER);
-                t.setTextSize(20);
+                t.setTextSize(100/gameSize);
                 t.setTextColor(android.graphics.Color.BLACK);
                 int color = 0;
                 color += (30+Math.random()*(255-30+1));
@@ -71,16 +62,17 @@ public class Game1Activity extends AppCompatActivity {
     }
 
 
-    public static Intent toGame1Activity(Context mContext) {
+    public static Intent toGame1Activity(Context mContext, int gameSize) {
         Intent intent = new Intent(mContext, Game1Activity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("gameSize", gameSize);
         return intent;
     }
 
     private void initListIndex(){
         listIndex = new ArrayList<>();
-        for (int i = 0;i<25;i++){
+        for (int i = 0;i< gameSize * gameSize; i++){
             listIndex.add(i+1);
         }
     }

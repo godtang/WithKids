@@ -14,7 +14,7 @@ import android.view.View;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class FullscreenActivity extends AppCompatActivity {
+public class FullscreenActivity extends AppCompatActivity implements View.OnClickListener{
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -111,7 +111,10 @@ public class FullscreenActivity extends AppCompatActivity {
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        findViewById(R.id.SchulteGrid_button1).setOnTouchListener(mDelayHideTouchListener);
+        //findViewById(R.id.SchulteGrid_button1).setOnTouchListener(mDelayHideTouchListener);
+        findViewById(R.id.SchulteGrid_button1).setOnClickListener(this);
+        findViewById(R.id.SchulteGrid_button2).setOnClickListener(this);
+        findViewById(R.id.SchulteGrid_button3).setOnClickListener(this);
     }
 
     @Override
@@ -169,6 +172,20 @@ public class FullscreenActivity extends AppCompatActivity {
 
     private void ShowGame1(){
         System.out.println("ShowGame1");
-        startActivity(Game1Activity.toGame1Activity(this));
+        //startActivity(Game1Activity.toGame1Activity(this));
+    }
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        if(R.id.SchulteGrid_button1 == id){
+            startActivity(Game1Activity.toGame1Activity(this,3));
+        }
+        else if(R.id.SchulteGrid_button2 == id){
+            startActivity(Game1Activity.toGame1Activity(this,4));
+        }
+        else if(R.id.SchulteGrid_button3 == id){
+            startActivity(Game1Activity.toGame1Activity(this,5));
+        }
     }
 }
