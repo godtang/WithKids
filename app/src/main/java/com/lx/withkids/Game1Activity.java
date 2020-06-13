@@ -2,13 +2,17 @@ package com.lx.withkids;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,23 +21,26 @@ import java.util.List;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class Game1Activity extends AppCompatActivity {
+public class Game1Activity extends AppCompatActivity{
 
     private androidx.gridlayout.widget.GridLayout gridLayout;
     private List<Integer> listIndex;
     private int gameSize;
+    private int iFind;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game1);
 
+        iFind = 1;
         gameSize = super.getIntent().getIntExtra("gameSize", 0);
         initListIndex();
 
         gridLayout = findViewById(R.id.GameGrid);
         gridLayout.setRowCount(gameSize);
         gridLayout.setColumnCount(gameSize);
+        gridLayout.setClickable(true);
 
         Display defaultDisplay = getWindowManager().getDefaultDisplay();
         Point point = new Point();
@@ -56,6 +63,30 @@ public class Game1Activity extends AppCompatActivity {
                 color += 0x10000*(30+Math.random()*(255-30+1));
                 color += 0xFF000000;
                 t.setBackgroundColor(color);
+                t.setClickable(true);
+                t.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View arg0) {
+                        String index = ((TextView)arg0).getText().toString();
+                        if(Integer.toString(iFind) == index){
+                            ((TextView)arg0).setVisibility(View.INVISIBLE);
+                            iFind++;
+                            if(iFind>gameSize*gameSize){
+                                Toast toast=Toast.makeText(Game1Activity.this,"congratulations",Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER,0,0);
+                                toast.show();
+//                                try {
+//                                    Thread.sleep(5000);
+//                                }
+//                                catch (Exception e)
+//                                {
+//                                    e.printStackTrace();
+//                                }
+                                finish();
+                            }
+                        }
+                    }
+                });
                 gridLayout.addView(t);
             }
         }
