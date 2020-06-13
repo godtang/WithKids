@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
@@ -75,14 +76,13 @@ public class Game1Activity extends AppCompatActivity{
                                 Toast toast=Toast.makeText(Game1Activity.this,"congratulations",Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.CENTER,0,0);
                                 toast.show();
-//                                try {
-//                                    Thread.sleep(5000);
-//                                }
-//                                catch (Exception e)
-//                                {
-//                                    e.printStackTrace();
-//                                }
-                                finish();
+                                Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        finish();
+                                    }
+                                }, 800);
                             }
                         }
                     }
