@@ -30,16 +30,18 @@
             android:id="@+id/calc_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#FFFFFF"
             android:layout_weight="0.5">
 
+            <com.lx.withkids.DrawSurfaceView
+                android:id="@+id/myDrawView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
         </FrameLayout>
 
         <FrameLayout
             android:id="@+id/result_lay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#FFFF00"
             android:layout_weight="0.5">
 
         </FrameLayout>

@@ -9,10 +9,8 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Layout;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 /**
@@ -78,6 +76,7 @@ public class Game2Activity extends AppCompatActivity {
 
     private FrameLayout layoutCalc;
     private FrameLayout layoutResult;
+    private DrawSurfaceView drawView;
     /**
      * Touch listener to use for in-layout UI controls to delay hiding the
      * system UI. This is to prevent the jarring behavior of controls going away
@@ -108,6 +107,7 @@ public class Game2Activity extends AppCompatActivity {
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
+        drawView = findViewById(R.id.myDrawView);
 
 
         // Set up the user interaction to manually show or hide the system UI.
