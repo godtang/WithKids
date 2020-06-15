@@ -9,9 +9,14 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -77,6 +82,9 @@ public class Game2Activity extends AppCompatActivity {
     private FrameLayout layoutCalc;
     private FrameLayout layoutResult;
     private DrawSurfaceView drawView;
+    private TextView tvl1;
+    private TextView tvl2;
+    private TextView tvl3;
     /**
      * Touch listener to use for in-layout UI controls to delay hiding the
      * system UI. This is to prevent the jarring behavior of controls going away
@@ -108,6 +116,15 @@ public class Game2Activity extends AppCompatActivity {
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
         drawView = findViewById(R.id.myDrawView);
+        tvl1 = findViewById(R.id.textView1);
+        tvl2 = findViewById(R.id.textView2);
+        tvl3 = findViewById(R.id.textView3);
+        tvl1.setTextSize(50);
+        tvl2.setTextSize(50);
+        tvl3.setTextSize(20);
+
+
+
 
 
         // Set up the user interaction to manually show or hide the system UI.
@@ -122,6 +139,8 @@ public class Game2Activity extends AppCompatActivity {
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
         //findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
+
+        initCalc();
     }
 
     @Override
@@ -187,6 +206,32 @@ public class Game2Activity extends AppCompatActivity {
         Point point = new Point();
         getWindowManager().getDefaultDisplay().getSize(point);
         return point.y;
+    }
+
+    private void initCalc(){
+        int iCalc, iFront, iBack;
+        iCalc = (int) (Math.random() * 2); // 0加法 1减法
+        while (true) {
+            iFront = (int) (1 + Math.random() * 100);
+            iBack = (int) (1 + Math.random() * 100);
+            if (0 == iCalc){
+                if(iFront + iBack <= 100){
+                    break;
+                }
+            }
+            else {
+                if(iFront < iBack){
+                    int temp = iFront;
+                    iFront = iBack;
+                    iBack = temp;
+                    break;
+                }
+            }
+        }
+
+        tvl1.setText(Integer.toString(iFront) + "      ");
+        tvl2.setText((0==iCalc ? "+" : "-")+"       " + Integer.toString(iBack) + "      ");
+        tvl3.setText("_________________________________    ");
     }
 
 }
