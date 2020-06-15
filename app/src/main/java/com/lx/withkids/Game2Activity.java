@@ -9,14 +9,18 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -85,6 +89,9 @@ public class Game2Activity extends AppCompatActivity {
     private TextView tvl1;
     private TextView tvl2;
     private TextView tvl3;
+    private TextView inputText;
+    private androidx.gridlayout.widget.GridLayout inputGridLayout;
+    private int iResult;
     /**
      * Touch listener to use for in-layout UI controls to delay hiding the
      * system UI. This is to prevent the jarring behavior of controls going away
@@ -106,12 +113,6 @@ public class Game2Activity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.activity_game2);
 
-//        layoutCalc = findViewById(R.id.calc_layout);
-//        layoutResult = findViewById(R.id.result_lay);
-//        ViewGroup.LayoutParams lp = layoutResult.getLayoutParams();
-//        lp.width = getScreenHeight() / 2;
-//        layoutResult.setLayoutParams(lp);
-
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
@@ -119,12 +120,8 @@ public class Game2Activity extends AppCompatActivity {
         tvl1 = findViewById(R.id.textView1);
         tvl2 = findViewById(R.id.textView2);
         tvl3 = findViewById(R.id.textView3);
-        tvl1.setTextSize(50);
-        tvl2.setTextSize(50);
-        tvl3.setTextSize(20);
-
-
-
+        inputText = findViewById(R.id.resultInput);
+        inputGridLayout = findViewById(R.id.inputGrid);
 
 
         // Set up the user interaction to manually show or hide the system UI.
@@ -195,12 +192,14 @@ public class Game2Activity extends AppCompatActivity {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
+
     //获取屏幕的宽度
     public int getScreenWidth() {
         Point point = new Point();
         getWindowManager().getDefaultDisplay().getSize(point);
         return point.x;
     }
+
     //获取屏幕的高度
     public int getScreenHeight() {
         Point point = new Point();
@@ -208,19 +207,23 @@ public class Game2Activity extends AppCompatActivity {
         return point.y;
     }
 
-    private void initCalc(){
+    private void initCalc() {
+        tvl1.setTextSize(50);
+        tvl2.setTextSize(50);
+        tvl3.setTextSize(20);
+
+
         int iCalc, iFront, iBack;
         iCalc = (int) (Math.random() * 2); // 0加法 1减法
         while (true) {
             iFront = (int) (1 + Math.random() * 100);
             iBack = (int) (1 + Math.random() * 100);
-            if (0 == iCalc){
-                if(iFront + iBack <= 100){
+            if (0 == iCalc) {
+                if (iFront + iBack <= 100) {
                     break;
                 }
-            }
-            else {
-                if(iFront < iBack){
+            } else {
+                if (iFront < iBack) {
                     int temp = iFront;
                     iFront = iBack;
                     iBack = temp;
@@ -228,10 +231,102 @@ public class Game2Activity extends AppCompatActivity {
                 }
             }
         }
+        iResult = (0 == iCalc) ? iFront + iBack : iFront - iBack;
 
         tvl1.setText(Integer.toString(iFront) + "      ");
-        tvl2.setText((0==iCalc ? "+" : "-")+"       " + Integer.toString(iBack) + "      ");
+        tvl2.setText((0 == iCalc ? "+" : "-") + "       " + Integer.toString(iBack) + "      ");
         tvl3.setText("_________________________________    ");
+
+        inputText.setText("");
+        inputText.setTextSize(30);
+        inputGridLayout.setRowCount(4);
+        inputGridLayout.setColumnCount(3);
+        inputGridLayout.setClickable(true);
+
+        Display defaultDisplay = getWindowManager().getDefaultDisplay();
+        Point point = new Point();
+        defaultDisplay.getSize(point);
+
+        //注意此时是横屏的
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) findViewById(R.id.resultInerLayout).getLayoutParams();
+        int screenWidth = point.y;
+        int screenHeight = point.x;
+        int iButtonWidth = ((screenWidth / 2) - lp.leftMargin - lp.rightMargin) / 3;
+        int iButtonHeight = (screenHeight - lp.topMargin - lp.bottomMargin - 100) / 4;
+        for (int iRow = 0; iRow < 3; iRow++) {
+            for (int iCol = 0; iCol < 4; iCol++) {
+                Button t = new Button(this);
+                final int index = iRow * 4 + iCol;
+                if (0 == index) {
+                    t.setText(Integer.toString(7));
+                } else if (1 == index) {
+                    t.setText(Integer.toString(8));
+                } else if (2 == index) {
+                    t.setText(Integer.toString(9));
+                } else if (3 == index) {
+                    t.setText(Integer.toString(4));
+                } else if (4 == index) {
+                    t.setText(Integer.toString(5));
+                } else if (5 == index) {
+                    t.setText(Integer.toString(6));
+                } else if (6 == index) {
+                    t.setText(Integer.toString(1));
+                } else if (7 == index) {
+                    t.setText(Integer.toString(2));
+                } else if (8 == index) {
+                    t.setText(Integer.toString(3));
+                } else if (9 == index) {
+                    t.setText("C");
+                } else if (10 == index) {
+                    t.setText(Integer.toString(0));
+                } else if (11 == index) {
+                    t.setText("OK");
+                }
+                t.setWidth(iButtonWidth);
+                t.setHeight(iButtonHeight);
+                t.setGravity(Gravity.CENTER);
+                t.setTextSize(40);
+                t.setTextColor(android.graphics.Color.BLACK);
+                int color = 0;
+                color += (30 + Math.random() * (255 - 30 + 1));
+                color += 0x100 * (30 + Math.random() * (255 - 30 + 1));
+                color += 0x10000 * (30 + Math.random() * (255 - 30 + 1));
+                color += 0xFF000000;
+                t.setBackgroundColor(color);
+                t.setClickable(true);
+                t.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View arg0) {
+                        String btnText = ((TextView) arg0).getText().toString();
+                        if ("C" == btnText) {
+                            inputText.setText("");
+                        } else if ("OK" == btnText) {
+                            String strResult = inputText.getText().toString();
+                            if(strResult.equals(Integer.toString(iResult))){
+                                Toast toast=Toast.makeText(Game2Activity.this,"congratulations",Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER,0,0);
+                                toast.show();
+                                Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        finish();
+                                    }
+                                }, 800);
+                            }else {
+                                Toast toast=Toast.makeText(Game2Activity.this,"calculation error",Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER,0,0);
+                                toast.show();
+                            }
+                        } else {
+                            String temp = inputText.getText().toString();
+                            inputText.setText(temp + btnText);
+                        }
+                    }
+                });
+                inputGridLayout.addView(t);
+            }
+        }
     }
 
 }
