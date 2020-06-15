@@ -5,17 +5,21 @@ import android.annotation.SuppressLint;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Layout;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class FullscreenActivity extends AppCompatActivity implements View.OnClickListener{
+public class Game2Activity extends AppCompatActivity {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -72,12 +76,34 @@ public class FullscreenActivity extends AppCompatActivity implements View.OnClic
         }
     };
 
+    private FrameLayout layoutCalc;
+    private FrameLayout layoutResult;
+    /**
+     * Touch listener to use for in-layout UI controls to delay hiding the
+     * system UI. This is to prevent the jarring behavior of controls going away
+     * while interacting with activity UI.
+     */
+    private final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            if (AUTO_HIDE) {
+                delayedHide(AUTO_HIDE_DELAY_MILLIS);
+            }
+            return false;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        setContentView(R.layout.activity_game2);
 
-        setContentView(R.layout.activity_fullscreen);
+//        layoutCalc = findViewById(R.id.calc_layout);
+//        layoutResult = findViewById(R.id.result_lay);
+//        ViewGroup.LayoutParams lp = layoutResult.getLayoutParams();
+//        lp.width = getScreenHeight() / 2;
+//        layoutResult.setLayoutParams(lp);
 
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
@@ -92,10 +118,10 @@ public class FullscreenActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
-        findViewById(R.id.SchulteGrid_button1).setOnClickListener(this);
-        findViewById(R.id.SchulteGrid_button2).setOnClickListener(this);
-        findViewById(R.id.SchulteGrid_button3).setOnClickListener(this);
-        findViewById(R.id.Calc_button).setOnClickListener(this);
+        // Upon interacting with UI controls, delay any scheduled hide()
+        // operations to prevent the jarring behavior of controls going away
+        // while interacting with the UI.
+        //findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
     }
 
     @Override
@@ -109,11 +135,11 @@ public class FullscreenActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void toggle() {
-        if (mVisible) {
-            hide();
-        } else {
-            show();
-        }
+//        if (mVisible) {
+//            hide();
+//        } else {
+//            show();
+//        }
     }
 
     private void hide() {
@@ -122,7 +148,7 @@ public class FullscreenActivity extends AppCompatActivity implements View.OnClic
         if (actionBar != null) {
             actionBar.hide();
         }
-        mControlsView.setVisibility(View.GONE);
+        //mControlsView.setVisibility(View.GONE);
         mVisible = false;
 
         // Schedule a runnable to remove the status and navigation bar after a delay
@@ -150,24 +176,17 @@ public class FullscreenActivity extends AppCompatActivity implements View.OnClic
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
-
-
-
-    @Override
-    public void onClick(View view) {
-        int id = view.getId();
-        if(R.id.SchulteGrid_button1 == id){
-            startActivity(Game1Activity.toGame1Activity(this,3));
-        }
-        else if(R.id.SchulteGrid_button2 == id){
-            startActivity(Game1Activity.toGame1Activity(this,4));
-        }
-        else if(R.id.SchulteGrid_button3 == id){
-            startActivity(Game1Activity.toGame1Activity(this,5));
-        }
-        else if(R.id.Calc_button == id){
-            Intent intent = new Intent(FullscreenActivity.this, Game2Activity.class);
-            startActivity(intent);
-        }
+    //获取屏幕的宽度
+    public int getScreenWidth() {
+        Point point = new Point();
+        getWindowManager().getDefaultDisplay().getSize(point);
+        return point.x;
     }
+    //获取屏幕的高度
+    public int getScreenHeight() {
+        Point point = new Point();
+        getWindowManager().getDefaultDisplay().getSize(point);
+        return point.y;
+    }
+
 }
