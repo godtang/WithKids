@@ -11,14 +11,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.Display;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -85,13 +82,14 @@ public class Game2Activity extends AppCompatActivity {
 
     private FrameLayout layoutCalc;
     private FrameLayout layoutResult;
-    private DrawSurfaceView drawView;
+    private DrawView drawView;
     private TextView tvl1;
     private TextView tvl2;
     private TextView tvl3;
     private TextView inputText;
     private androidx.gridlayout.widget.GridLayout inputGridLayout;
     private int iResult;
+    private Button btnClearDraw;
     /**
      * Touch listener to use for in-layout UI controls to delay hiding the
      * system UI. This is to prevent the jarring behavior of controls going away
@@ -129,6 +127,13 @@ public class Game2Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 toggle();
+            }
+        });
+        btnClearDraw = findViewById(R.id.buttonClear);
+        btnClearDraw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawView.clear();
             }
         });
 
@@ -328,5 +333,7 @@ public class Game2Activity extends AppCompatActivity {
             }
         }
     }
+
+
 
 }
