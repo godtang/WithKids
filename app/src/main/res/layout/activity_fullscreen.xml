@@ -62,12 +62,36 @@
                     android:text="@string/SchulteGrid_button3" />
 
             <Button
-                android:id="@+id/Calc_button"
+                android:id="@+id/add_button"
                 style="?metaButtonBarButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/Calc_button" />
+                android:text="@string/add_button" />
+
+            <Button
+                android:id="@+id/sub_button"
+                style="?metaButtonBarButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/sub_button" />
+
+            <Button
+                android:id="@+id/multi_button"
+                style="?metaButtonBarButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/multi_button" />
+
+            <Button
+                android:id="@+id/div_button"
+                style="?metaButtonBarButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/div_button" />
 
         </LinearLayout>
     </FrameLayout>

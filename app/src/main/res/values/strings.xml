@@ -4,7 +4,10 @@
     <string name="SchulteGrid_button1">Schulte Grid 3X3</string>
     <string name="SchulteGrid_button2">Schulte Grid 4X4</string>
     <string name="SchulteGrid_button3">Schulte Grid 5X5</string>
-    <string name="Calc_button">ADD AND SUBTRACT WITHIN 100</string>
+    <string name="add_button">ADDITION UNDER 100</string>
+    <string name="sub_button">SUBTRACT WITHIN 100</string>
+    <string name="multi_button">MULTIPLICATION UNDER 100</string>
+    <string name="div_button">DIVISION WITHIN 100</string>
     <string name="dummy_content">Game\nWith Kids</string>
 
     <string name="title_activity_game1">Game1Activity</string>

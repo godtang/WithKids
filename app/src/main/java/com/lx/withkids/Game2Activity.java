@@ -90,6 +90,7 @@ public class Game2Activity extends AppCompatActivity {
     private androidx.gridlayout.widget.GridLayout inputGridLayout;
     private int iResult;
     private Button btnClearDraw;
+    private int iType;
     /**
      * Touch listener to use for in-layout UI controls to delay hiding the
      * system UI. This is to prevent the jarring behavior of controls going away
@@ -141,6 +142,8 @@ public class Game2Activity extends AppCompatActivity {
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
         //findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
+
+        iType = super.getIntent().getIntExtra("Type", 0);
 
         initCalc();
     }
@@ -219,27 +222,46 @@ public class Game2Activity extends AppCompatActivity {
 
 
         int iCalc, iFront, iBack;
-        iCalc = (int) (Math.random() * 2); // 0加法 1减法
+        iCalc = iType; // 1加法 2减法 3乘法 4除法
         while (true) {
-            iFront = (int) (1 + Math.random() * 100);
-            iBack = (int) (1 + Math.random() * 100);
-            if (0 == iCalc) {
-                if (iFront + iBack <= 100) {
-                    break;
+            if (1 == iCalc || 2 == iCalc) {
+                iFront = (int) (1 + Math.random() * 100);
+                iBack = (int) (1 + Math.random() * 100);
+                if (1 == iCalc) {
+                    if (iFront + iBack <= 100) {
+                        break;
+                    }
+                } else {
+                    if (iFront < iBack) {
+                        int temp = iFront;
+                        iFront = iBack;
+                        iBack = temp;
+                        break;
+                    }
                 }
             } else {
-                if (iFront < iBack) {
-                    int temp = iFront;
-                    iFront = iBack;
-                    iBack = temp;
-                    break;
-                }
+                iFront = (int) (1 + Math.random() * 10);
+                iBack = (int) (1 + Math.random() * 10);
+                break;
             }
         }
-        iResult = (0 == iCalc) ? iFront + iBack : iFront - iBack;
+        if (1 == iCalc) {
+            iResult = iFront + iBack;
+            tvl2.setText("+       " + Integer.toString(iBack) + "      ");
+        } else if (2 == iCalc) {
+            iResult = iFront - iBack;
+            tvl2.setText("-       " + Integer.toString(iBack) + "      ");
+        } else if (3 == iCalc) {
+            iResult = iFront * iBack;
+            tvl2.setText("×       " + Integer.toString(iBack) + "      ");
+        } else {
+            int temp = iFront;
+            iFront = iFront * iBack;
+            iResult = temp;
+            tvl2.setText("÷       " + Integer.toString(iBack) + "      ");
+        }
 
         tvl1.setText(Integer.toString(iFront) + "      ");
-        tvl2.setText((0 == iCalc ? "+" : "-") + "       " + Integer.toString(iBack) + "      ");
         tvl3.setText("_________________________________    ");
 
         inputText.setText("");
@@ -307,9 +329,9 @@ public class Game2Activity extends AppCompatActivity {
                             inputText.setText("");
                         } else if ("OK" == btnText) {
                             String strResult = inputText.getText().toString();
-                            if(strResult.equals(Integer.toString(iResult))){
-                                Toast toast=Toast.makeText(Game2Activity.this,"congratulations",Toast.LENGTH_SHORT);
-                                toast.setGravity(Gravity.CENTER,0,0);
+                            if (strResult.equals(Integer.toString(iResult))) {
+                                Toast toast = Toast.makeText(Game2Activity.this, "congratulations", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
                                 Handler handler = new Handler();
                                 handler.postDelayed(new Runnable() {
@@ -318,9 +340,9 @@ public class Game2Activity extends AppCompatActivity {
                                         finish();
                                     }
                                 }, 800);
-                            }else {
-                                Toast toast=Toast.makeText(Game2Activity.this,"calculation error",Toast.LENGTH_SHORT);
-                                toast.setGravity(Gravity.CENTER,0,0);
+                            } else {
+                                Toast toast = Toast.makeText(Game2Activity.this, "calculation error", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
                             }
                         } else {
@@ -333,7 +355,6 @@ public class Game2Activity extends AppCompatActivity {
             }
         }
     }
-
 
 
 }

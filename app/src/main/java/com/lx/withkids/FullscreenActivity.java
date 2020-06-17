@@ -95,7 +95,10 @@ public class FullscreenActivity extends AppCompatActivity implements View.OnClic
         findViewById(R.id.SchulteGrid_button1).setOnClickListener(this);
         findViewById(R.id.SchulteGrid_button2).setOnClickListener(this);
         findViewById(R.id.SchulteGrid_button3).setOnClickListener(this);
-        findViewById(R.id.Calc_button).setOnClickListener(this);
+        findViewById(R.id.add_button).setOnClickListener(this);
+        findViewById(R.id.sub_button).setOnClickListener(this);
+        findViewById(R.id.multi_button).setOnClickListener(this);
+        findViewById(R.id.div_button).setOnClickListener(this);
     }
 
     @Override
@@ -165,8 +168,24 @@ public class FullscreenActivity extends AppCompatActivity implements View.OnClic
         else if(R.id.SchulteGrid_button3 == id){
             startActivity(Game1Activity.toGame1Activity(this,5));
         }
-        else if(R.id.Calc_button == id){
+        else if(R.id.add_button == id){
             Intent intent = new Intent(FullscreenActivity.this, Game2Activity.class);
+            intent.putExtra("Type", 1);
+            startActivity(intent);
+        }
+        else if(R.id.sub_button == id){
+            Intent intent = new Intent(FullscreenActivity.this, Game2Activity.class);
+            intent.putExtra("Type", 2);
+            startActivity(intent);
+        }
+        else if(R.id.multi_button == id){
+            Intent intent = new Intent(FullscreenActivity.this, Game2Activity.class);
+            intent.putExtra("Type", 3);
+            startActivity(intent);
+        }
+        else if(R.id.div_button == id){
+            Intent intent = new Intent(FullscreenActivity.this, Game2Activity.class);
+            intent.putExtra("Type", 4);
             startActivity(intent);
         }
     }
