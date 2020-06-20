@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimerTask;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -28,6 +29,8 @@ public class Game1Activity extends AppCompatActivity{
     private List<Integer> listIndex;
     private int gameSize;
     private int iFind;
+    private TextView costTime;
+    private int iCostTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +76,7 @@ public class Game1Activity extends AppCompatActivity{
                             ((TextView)arg0).setVisibility(View.INVISIBLE);
                             iFind++;
                             if(iFind>gameSize*gameSize){
-                                Toast toast=Toast.makeText(Game1Activity.this,"congratulations",Toast.LENGTH_SHORT);
+                                Toast toast=Toast.makeText(Game1Activity.this,"congratulations, cost " + Integer.toString(iCostTime) + " seconds",Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.CENTER,0,0);
                                 toast.show();
                                 Handler handler = new Handler();
@@ -90,6 +93,28 @@ public class Game1Activity extends AppCompatActivity{
                 gridLayout.addView(t);
             }
         }
+
+        costTime = findViewById(R.id.costTime);
+        iCostTime = 0;
+        final Handler mHandler = new Handler();
+        Runnable r = new Runnable() {
+
+            @Override
+            public void run() {
+                //do something
+                //每隔1s循环执行run方法
+                try {
+                    costTime.setText(Integer.toString(iCostTime++));
+                    mHandler.postDelayed(this, 1000);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        };
+        mHandler.postDelayed(r, 100);//延时100毫秒
+
     }
 
 
