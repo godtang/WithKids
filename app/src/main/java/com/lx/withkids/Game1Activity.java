@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,21 +17,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 import java.util.TimerTask;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class Game1Activity extends AppCompatActivity{
 
+
+public class Game1Activity extends AppCompatActivity{
     private androidx.gridlayout.widget.GridLayout gridLayout;
     private List<Integer> listIndex;
     private int gameSize;
     private int iFind;
     private TextView costTime;
     private int iCostTime;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +83,33 @@ public class Game1Activity extends AppCompatActivity{
                             ((TextView)arg0).setVisibility(View.INVISIBLE);
                             iFind++;
                             if(iFind>gameSize*gameSize){
-                                Toast toast=Toast.makeText(Game1Activity.this,"congratulations, cost " + Integer.toString(iCostTime) + " seconds",Toast.LENGTH_SHORT);
+                                String record = "";
+                                try {
+                                    SharedPreferences share = getApplicationContext().getSharedPreferences("records.properties", Context.MODE_PRIVATE);
+                                    record = share.getString("schultegrid"+Integer.toString(gameSize), "9999");
+
+                                    if(Integer.parseInt(record) > iCostTime) {
+                                        Map<String, String> mqttinfomap = new HashMap<String, String>();
+                                        mqttinfomap.put("schultegrid" + Integer.toString(gameSize), Integer.toString(iCostTime));
+                                        SharedPreferences.Editor editor = share.edit();//取得编辑器
+                                        Set<Map.Entry<String, String>> set = mqttinfomap.entrySet();
+                                        // 遍历键值对对象的集合，得到每一个键值对对象
+                                        for (Map.Entry<String, String> me : set) {
+                                            // 根据键值对对象获取键和值
+                                            String key = me.getKey();
+                                            String value = me.getValue();
+                                            editor.putString(key, value);//存储配置 参数1 是key 参数2 是值
+                                        }
+                                        editor.commit();//提交刷新数据
+                                    }
+                                } catch (Exception e1) {
+                                    e1.printStackTrace();
+                                }
+
+                                Toast toast=Toast.makeText(Game1Activity.this,
+                                        "congratulations, cost " + Integer.toString(iCostTime) + " seconds, " +
+                                        "best record " + record + " seconds",
+                                        Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.CENTER,0,0);
                                 toast.show();
                                 Handler handler = new Handler();
@@ -95,6 +128,7 @@ public class Game1Activity extends AppCompatActivity{
         }
 
         costTime = findViewById(R.id.costTime);
+        costTime.setVisibility(View.INVISIBLE);
         iCostTime = 0;
         final Handler mHandler = new Handler();
         Runnable r = new Runnable() {
