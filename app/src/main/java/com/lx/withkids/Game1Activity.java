@@ -66,7 +66,7 @@ public class Game1Activity extends AppCompatActivity{
                 t.setWidth(iTextWidth);
                 t.setHeight(iTextWidth);
                 t.setGravity(Gravity.CENTER);
-                t.setTextSize(100/gameSize);
+                t.setTextSize(200/gameSize);
                 t.setTextColor(android.graphics.Color.BLACK);
                 int color = 0;
                 color += (30+Math.random()*(255-30+1));

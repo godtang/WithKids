@@ -240,8 +240,8 @@ public class Game2Activity extends AppCompatActivity {
                     }
                 }
             } else {
-                iFront = (int) (1 + Math.random() * 10);
-                iBack = (int) (1 + Math.random() * 10);
+                iFront = (int) (1 + Math.random() * 9);
+                iBack = (int) (1 + Math.random() * 9);
                 break;
             }
         }
